@@ -1,0 +1,28 @@
+from enum import Enum
+from typing import List
+from pydantic import BaseModel
+
+class PhoneType(str, Enum):
+    mobile = "móvel"
+    landline = "fixo"
+    business = "comercial"
+
+class ContactCategory(str, Enum):
+    family = "familiar"
+    personal = "pessoal"
+    business = "comercial"
+
+class Phone(BaseModel):
+    number: str
+    type: PhoneType
+
+class Contact(BaseModel):
+    id: int
+    name: str
+    phones: List[Phone]
+    category: ContactCategory
+
+class ContactCreate(BaseModel):
+    name: str
+    phones: List[Phone]
+    category: ContactCategory
