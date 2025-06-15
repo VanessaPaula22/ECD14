@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from app import models, schemas, database
+from app import models, schemas, database, ariadne_graphql
 
 app = FastAPI()
 
@@ -38,3 +38,5 @@ def consultar_contato(contato_id: int, db: Session = Depends(get_db)):
 @app.get("/contatos/", response_model=List[schemas.Contato])
 def listar_contatos(db: Session = Depends(get_db)):
     return db.query(models.Contato).all()
+
+app.mount("/graphql", ariadne_graphql.graphql_app)
