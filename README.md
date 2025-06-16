@@ -43,13 +43,18 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
    ```
    python teste_api.py
    ```
-3. Siga as instruções para inserir nome, categoria e um ou mais telefones.
+3. Siga as instruções para inserir nome, categoria e um ou mais telefones. É possível também consultar os contatos já inseridos.
+
+Por exemplo:
+
+![image](https://github.com/user-attachments/assets/71697531-1cbe-4d2b-9c19-88afe8cc5a4c)
 
 ---
 
 ## GraphQL
 
-1. Acesse [http://localhost:8000/graphql](http://localhost:8000/graphql)
+1. Acesse [http://localhost:8000/graphql](http://localhost:8000/graphql) para acessar o playground.
+2. As queries a seguir podem ser executadas:
 
 ```graphql
 query {
@@ -88,6 +93,11 @@ mutation {
   }
 }
 ```
+
+Por exemplo, resultando em:
+
+![image](https://github.com/user-attachments/assets/5f2c4eda-b826-4c27-9caf-822e7ef5a24f)
+
 
 ## Endpoints REST principais
 
