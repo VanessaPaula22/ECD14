@@ -5,6 +5,19 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
 
 ---
 
+## Como rodar usando Terminal
+
+1. **Execute**
+
+    ```bash
+   pip install -r requirements.txt
+   uvicorn app.main:app --reload
+   ```  
+
+3. Acesse a API em: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
 ## Como rodar usando Docker
 
 1. **Construa a imagem Docker:**
