@@ -1,4 +1,5 @@
 import requests
+import os
 
 CATEGORIAS = ["familiar", "pessoal", "comercial"]
 TIPOS = ["movel", "fixo", "comercial"]
