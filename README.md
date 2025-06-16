@@ -26,7 +26,7 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
 1. Certifique-se que a API está rodando.
 2. Em outro terminal, execute:
    ```
-   python test_api.py
+   python teste_api.py
    ```
 3. Siga as instruções para inserir nome, categoria e um ou mais telefones.
 
