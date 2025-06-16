@@ -17,7 +17,7 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
    docker run -d -p 8000:8000 ecd14-api
    ```
 
-3. Acesse a API em: [http://localhost:8000/graphql](http://localhost:8000/graphql)
+3. Acesse a API em: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
@@ -34,7 +34,7 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
 
 ## GraphQL
 
-1. Acesse [http://localhost:8000/docs](http://localhost:8000/docs)
+1. Acesse [http://localhost:8000/graphql](http://localhost:8000/graphql)
 
 ```graphql
 query {
