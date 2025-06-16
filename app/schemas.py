@@ -36,5 +36,5 @@ class Contato(ContatoBase):
     id: int
     telefones: List[Telefone] = []
 
-    class Config:
-        orm_mode = True
+class Config:
+    from_attributes = True

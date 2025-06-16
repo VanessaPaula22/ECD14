@@ -1,42 +1,71 @@
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.orm import Session
+from flask import Flask, request, jsonify, abort
+from sqlalchemy.orm import scoped_session
 from typing import List
-from app import models, schemas, database, ariadne_graphql
+from database import *
+from models import *
+from ariadne_graphql import *
 
-app = FastAPI()
+app = Flask(__name__)
+Base.metadata.create_all(bind=engine)
+db_session = scoped_session(SessionLocal)
 
-models.Base.metadata.create_all(bind=database.engine)
+def contato_to_dict(contato):
+    return {
+        "id": contato.id,
+        "nome": contato.nome,
+        "categoria": contato.categoria.value if contato.categoria else None,
+        "telefones": [
+            {
+                "id": tel.id,
+                "numero": tel.numero,
+                "tipo": tel.tipo.value if tel.tipo else None
+            } for tel in contato.telefones
+        ]
+    }
 
-def get_db():
-    db = database.SessionLocal()
+@app.route("/contatos/", methods=["POST"])
+def criar_contato():
+    data = request.get_json()
+    if not data or not data.get("nome") or not data.get("categoria") or not data.get("telefones"):
+        abort(400, "Dados incompletos.")
     try:
-        yield db
-    finally:
-        db.close()
+        contato = models.Contato(
+            nome=data["nome"],
+            categoria=models.CategoriaContato(data["categoria"])
+        )
+        db_session.add(contato)
+        db_session.commit()
+        for tel_data in data["telefones"]:
+            tel = models.Telefone(
+                numero=tel_data["numero"],
+                tipo=models.TipoTelefone(tel_data["tipo"]),
+                contato_id=contato.id
+            )
+            db_session.add(tel)
+        db_session.commit()
+        db_session.refresh(contato)
+        return jsonify(contato_to_dict(contato)), 201
+    except Exception as e:
+        db_session.rollback()
+        abort(400, str(e))
 
-@app.post("/contatos/", response_model=schemas.Contato)
-def criar_contato(contato: schemas.ContatoCreate, db: Session = Depends(get_db)):
-    db_contato = models.Contato(nome=contato.nome, categoria=contato.categoria)
-    db.add(db_contato)
-    db.commit()
-    db.refresh(db_contato)
-    for tel in contato.telefones:
-        db_telefone = models.Telefone(numero=tel.numero, tipo=tel.tipo, contato_id=db_contato.id)
-        db.add(db_telefone)
-    db.commit()
-    db.refresh(db_contato)
-    db_contato.telefones = db.query(models.Telefone).filter_by(contato_id=db_contato.id).all()
-    return db_contato
-
-@app.get("/contatos/{contato_id}", response_model=schemas.Contato)
-def consultar_contato(contato_id: int, db: Session = Depends(get_db)):
-    contato = db.query(models.Contato).filter(models.Contato.id == contato_id).first()
+@app.route("/contatos/<int:contato_id>", methods=["GET"])
+def get_contato(contato_id):
+    contato = db_session.query(models.Contato).filter_by(id=contato_id).first()
     if not contato:
-        raise HTTPException(status_code=404, detail="Contato não encontrado")
-    return contato
+        abort(404, "Contato não encontrado.")
+    return jsonify(contato_to_dict(contato)), 200
 
-@app.get("/contatos/", response_model=List[schemas.Contato])
-def listar_contatos(db: Session = Depends(get_db)):
-    return db.query(models.Contato).all()
+@app.route("/contatos/", methods=["GET"])
+def listar_contatos():
+    contatos = db_session.query(models.Contato).all()
+    return jsonify([contato_to_dict(c) for c in contatos]), 200
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 app.mount("/graphql", ariadne_graphql.graphql_app)

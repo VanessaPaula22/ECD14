@@ -1,8 +1,8 @@
 from ariadne import QueryType, MutationType, make_executable_schema, ObjectType, gql
 from ariadne.asgi import GraphQL
 from sqlalchemy.orm import Session
-from app import models, schemas, ariadne_graphql
-from app.database import SessionLocal
+import models, schemas
+from database import SessionLocal
 
 type_defs = gql("""
     type Query {
