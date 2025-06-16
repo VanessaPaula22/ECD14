@@ -2,19 +2,19 @@ from pydantic import BaseModel
 from typing import List
 import enum
 
-class TipoTelefoneEnum(str, enum.Enum):
+class TipoTelefone(str, enum.Enum):
     movel = 'movel'
     fixo = 'fixo'
     comercial = 'comercial'
 
-class CategoriaContatoEnum(str, enum.Enum):
+class CategoriaContato(str, enum.Enum):
     familiar = 'familiar'
     pessoal = 'pessoal'
     comercial = 'comercial'
 
 class TelefoneBase(BaseModel):
     numero: str
-    tipo: TipoTelefoneEnum
+    tipo: TipoTelefone
 
 class TelefoneCreate(TelefoneBase):
     pass
@@ -27,7 +27,7 @@ class Telefone(TelefoneBase):
 
 class ContatoBase(BaseModel):
     nome: str
-    categoria: CategoriaContatoEnum
+    categoria: CategoriaContato
 
 class ContatoCreate(ContatoBase):
     telefones: List[TelefoneCreate]

@@ -7,7 +7,7 @@ app = FastAPI()
 
 models.Base.metadata.create_all(bind=database.engine)
 
-def get_db():
+def banco():
     db = database.SessionLocal()
     try:
         yield db
@@ -15,7 +15,7 @@ def get_db():
         db.close()
 
 @app.post("/contatos/", response_model=schemas.Contato)
-def criar_contato(contato: schemas.ContatoCreate, db: Session = Depends(get_db)):
+def criar_contato(contato: schemas.ContatoCreate, db: Session = Depends(banco)):
     db_contato = models.Contato(nome=contato.nome, categoria=contato.categoria)
     db.add(db_contato)
     db.commit()
@@ -29,14 +29,14 @@ def criar_contato(contato: schemas.ContatoCreate, db: Session = Depends(get_db))
     return db_contato
 
 @app.get("/contatos/{contato_id}", response_model=schemas.Contato)
-def consultar_contato(contato_id: int, db: Session = Depends(get_db)):
+def consultar_contato(contato_id: int, db: Session = Depends(banco)):
     contato = db.query(models.Contato).filter(models.Contato.id == contato_id).first()
     if not contato:
         raise HTTPException(status_code=404, detail="Contato não encontrado")
     return contato
 
 @app.get("/contatos/", response_model=List[schemas.Contato])
-def listar_contatos(db: Session = Depends(get_db)):
+def listar_contatos(db: Session = Depends(banco)):
     return db.query(models.Contato).all()
 
 app.mount("/graphql", ariadne_graphql.graphql_app)
