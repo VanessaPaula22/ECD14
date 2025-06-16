@@ -9,7 +9,7 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
 
 1. **Construa a imagem Docker:**
    ```bash
-   docker build -t ecd14-api 
+   docker build -t ecd14-api .
    ```
 
 2. **Execute o container:**
