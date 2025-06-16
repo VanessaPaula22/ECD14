@@ -20,9 +20,8 @@ def criar_contato(contato: schemas.CriarContato, db: Session = Depends(banco)):
     db.add(db_contato)
     db.commit()
     db.refresh(db_contato)
-    for tel in contato.telefones:
-        db_telefone = models.Telefone(numero=tel.numero, tipo=tel.tipo, contato_id=db_contato.id)
-        db.add(db_telefone)
+    telefones = [models.Telefone(numero=tel.numero, tipo=tel.tipo, contato_id=db_contato.id) for tel in contato.telefones]
+    db.add_all(telefones)
     db.commit()
     db.refresh(db_contato)
     db_contato.telefones = db.query(models.Telefone).filter_by(contato_id=db_contato.id).all()
