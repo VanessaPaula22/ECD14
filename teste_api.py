@@ -64,7 +64,7 @@ def listar_contatos(base_url):
         print("Nenhum contato cadastrado.")
 
 def main():
-    base_url = "http://localhost:5000/contatos/"
+    base_url = "http://localhost:8000/contatos/"
     while True:
         print("\nMenu:")
         print("1. Incluir contato")
