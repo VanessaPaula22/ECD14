@@ -24,7 +24,7 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
 ## Rodando o teste (test_api.py)
 
 1. Certifique-se que a API está rodando.
-2. No terminal, execute:
+2. Em outro terminal, execute:
    ```
    python test_api.py
    ```
