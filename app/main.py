@@ -15,7 +15,7 @@ def banco():
         db.close()
 
 @app.post("/contatos/", response_model=schemas.Contato)
-def criar_contato(contato: schemas.ContatoCreate, db: Session = Depends(banco)):
+def criar_contato(contato: schemas.CriarContato, db: Session = Depends(banco)):
     db_contato = models.Contato(nome=contato.nome, categoria=contato.categoria)
     db.add(db_contato)
     db.commit()

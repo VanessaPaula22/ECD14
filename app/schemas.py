@@ -16,7 +16,7 @@ class TelefoneBase(BaseModel):
     numero: str
     tipo: TipoTelefone
 
-class TelefoneCreate(TelefoneBase):
+class CriarTelefone(TelefoneBase):
     pass
 
 class Telefone(TelefoneBase):
@@ -29,8 +29,8 @@ class ContatoBase(BaseModel):
     nome: str
     categoria: CategoriaContato
 
-class ContatoCreate(ContatoBase):
-    telefones: List[TelefoneCreate]
+class CriarContato(ContatoBase):
+    telefones: List[CriarTelefone] = []
 
 class Contato(ContatoBase):
     id: int
