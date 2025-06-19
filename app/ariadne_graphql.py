@@ -1,8 +1,10 @@
 from ariadne import QueryType, MutationType, make_executable_schema, ObjectType, gql
 from ariadne.asgi import GraphQL
 from sqlalchemy.orm import Session
-from app import models, schemas, ariadne_graphql
+from app import models
 from app.database import SessionLocal
+from typing import List
+
 
 type_defs = gql("""
     type Query {
@@ -40,19 +42,22 @@ query = QueryType()
 mutation = MutationType()
 contato_obj = ObjectType("Contato")
 
+
 @query.field("contatos")
-def resolve_contatos(_, info):
+def resolve_contatos(_, _info):
     db: Session = SessionLocal()
     contatos = db.query(models.Contato).all()
     return contatos
 
+
 @query.field("contato")
-def resolve_contato(_, info, id):
+def resolve_contato(_, _info, id:int):
     db: Session = SessionLocal()
     return db.query(models.Contato).filter(models.Contato.id == id).first()
 
+
 @mutation.field("criarContato")
-def resolve_criar_contato(_, info, nome, categoria, telefones):
+def resolve_criar_contato(_, _info, nome:str, categoria:str, telefones:List[dict]):
     db: Session = SessionLocal()
     novo_contato = models.Contato(nome=nome, categoria=categoria)
     db.add(novo_contato)
@@ -67,14 +72,17 @@ def resolve_criar_contato(_, info, nome, categoria, telefones):
     db.refresh(novo_contato)
     return novo_contato
 
+
 @contato_obj.field("telefones")
-def resolve_telefones(contato_obj, info):
+def resolve_telefones(contato_obj, _info):
     db: Session = SessionLocal()
     contato = db.query(models.Contato).filter(models.Contato.id == contato_obj.id).first()
     return contato.telefones
 
+
 schema = make_executable_schema(
     type_defs, [query, mutation, contato_obj]
 )
+
 
 graphql_app = GraphQL(schema, debug=True)

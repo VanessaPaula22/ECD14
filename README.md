@@ -10,7 +10,7 @@ Projeto de API de contatos usando FastAPI, Docker e GraphQL para a disciplina Ar
 1. **Execute**
 
     ```bash
-   pip install -r requirements.txt
+   pip install -r .\requirements.txt
     ```
     ```bash
    uvicorn app.main:app --reload
