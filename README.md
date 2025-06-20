@@ -111,3 +111,5 @@ Por exemplo, resultando em:
 
 - Python 3.11
 - Docker 
+
+Readme criado com o apoio do ChatGPT.
