@@ -1,10 +1,12 @@
 import requests
-import os
+
 
 CATEGORIAS = ["familiar", "pessoal", "comercial"]
 TIPOS = ["movel", "fixo", "comercial"]
 
+
 def escolher_enum(msg, opcoes):
+    """Função para escolher uma opção de enumeração."""
     while True:
         print(f"{msg}:")
         for idx, opc in enumerate(opcoes, 1):
@@ -15,7 +17,9 @@ def escolher_enum(msg, opcoes):
         else:
             print("Opção inválida, tente novamente.\n")
 
+
 def incluir_contato(base_url):
+    """Função para incluir um novo contato via API."""
     nome = input("Nome do contato: ").strip()
     categoria = escolher_enum("Escolha a categoria", CATEGORIAS)
 
@@ -38,7 +42,9 @@ def incluir_contato(base_url):
     print("Status:", resp.status_code)
     print("Resposta:", resp.json())
 
+
 def consultar_contato(base_url):
+    """Função para consultar um contato pelo ID via API."""
     contato_id = input("Digite o ID do contato: ").strip()
     resp = requests.get(f"{base_url}{contato_id}")
     print("Status:", resp.status_code)
@@ -51,7 +57,9 @@ def consultar_contato(base_url):
     else:
         print("Contato não encontrado.")
 
+
 def listar_contatos(base_url):
+    """Função para listar todos os contatos via API."""
     resp = requests.get(base_url)
     print("Status:", resp.status_code)
     contatos = resp.json()
@@ -63,6 +71,7 @@ def listar_contatos(base_url):
             print()
     else:
         print("Nenhum contato cadastrado.")
+
 
 def main():
     base_url = "http://localhost:8000/contatos/"
@@ -84,6 +93,7 @@ def main():
             break
         else:
             print("Opção inválida.")
+
 
 if __name__ == "__main__":
     main()

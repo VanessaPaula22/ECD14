@@ -3,17 +3,21 @@ from sqlalchemy.orm import relationship
 from .database import Base
 import enum
 
+
 class TipoTelefone(str, enum.Enum):
     movel = 'movel'
     fixo = 'fixo'
     comercial = 'comercial'
+
 
 class CategoriaContato(str, enum.Enum):
     familiar = 'familiar'
     pessoal = 'pessoal'
     comercial = 'comercial'
 
+
 class Contato(Base):
+    """Modelo de Contato com relacionamento para Telefones."""
     __tablename__ = "contatos"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -21,7 +25,9 @@ class Contato(Base):
     categoria = Column(Enum(CategoriaContato), nullable=False)
     telefones = relationship("Telefone", back_populates="contato", cascade="all, delete-orphan")
 
+
 class Telefone(Base):
+    """Modelo de Telefone associado a um Contato."""
     __tablename__ = "telefones"
 
     id = Column(Integer, primary_key=True, index=True)

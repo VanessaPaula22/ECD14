@@ -1,6 +1,7 @@
-fastapi
-uvicorn
-gunicorn
-sqlalchemy
-pydantic
-ariadne
+fastapi==0.115.13
+uvicorn==0.34.3
+gunicorn==23.0.0
+sqlalchemy==2.0.41
+pydantic==2.11.7
+ariadne==0.26.2
+flake8==7.2.0
